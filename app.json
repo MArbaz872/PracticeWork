@@ -1,0 +1,46 @@
+{
+  "expo": {
+    "name": "PraticeWork",
+    "slug": "PraticeWork",
+    "platforms": [
+      "ios",
+      "android"
+    ],
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "permissions": [
+        "NOTIFICATIONS"
+      ],
+      "googleServicesFile": "./firebase/google-services(1).json",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#FFFFFF"
+      },
+      "package": "com.alicheema.PraticeWork"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "38470be1-77be-4afe-9780-4e3a7bd0a342"
+      }
+    }
+  }
+}
