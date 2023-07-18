@@ -69,7 +69,7 @@ export default function BookAnAppointment({ route, navigation }) {
 
     responseListener.current =
       Notifications.addNotificationResponseReceivedListener((response) => {
-        console.log(response);
+        // console.log(response);
       });
 
     return () => {
@@ -80,13 +80,13 @@ export default function BookAnAppointment({ route, navigation }) {
     };
   }, []);
   async function registerForPushNotificationsAsync() {
-    console.log("registerForPushNotificationsAsync")
+    // console.log("registerForPushNotificationsAsync")
     let token;
     if (Device.isDevice) {
       const { status: existingStatus } =
         await Notifications.getPermissionsAsync();
       let finalStatus = existingStatus;
-      console.log("here in bookappotment-->",finalStatus)
+      // console.log("here in bookappotment-->",finalStatus)
 
       if (existingStatus !== "granted") {
         const { status } = await Notifications.requestPermissionsAsync();
@@ -97,7 +97,7 @@ export default function BookAnAppointment({ route, navigation }) {
         return;
       }
       token = (await Notifications.getExpoPushTokenAsync()).data;
-      console.log("expo notification token ===", token);
+      // console.log("expo notification token ===", token);
       setExpoPushToken(token);
     } else {
       alert("Must use physical device for Push Notifications");
@@ -127,7 +127,10 @@ export default function BookAnAppointment({ route, navigation }) {
         }
       )
         .then((response) => response.json())
+        alert(response)
+        // console.log("lol----->",response)
         .then((responseJson) => {
+
           if (responseJson.data.status == "ok") {
             navigation.navigate("PaymentScreen");
           } else {
@@ -136,30 +139,37 @@ export default function BookAnAppointment({ route, navigation }) {
           console.log(responseJson);
         })
         .catch((error) => {
-          Toast.show(error.toString());
+          // Toast.show(error.toString());
+          console.log("error-=-=-=-=-=",error)
         });
     } catch (e) {
-      Toast.show(e.toString());
+      // Toast.show(e.toString());
+      console.log("e--=-=-=->",e)
     }
   };
 
-  // const PushTokenInFirebase = () => {
-  //   console.log("Firebase token====", expoPushToken);
-  //   try {
-  //     firebase
-  //       .firestore()
-  //       .collection("users")
-  //       .doc(doc_id)
-  //       .update({
-  //         NotificationToken: expoPushToken,
-  //       })
-  //       .then((data) => {
-  //         console.log("pushed", token);
-  //       });
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
+  const PushTokenInFirebase = (expoPushToken) => {
+    console.log("Firebase token====", expoPushToken);
+    try {
+      firebase
+        .firestore()
+        .collection("users")
+        .doc(doc_id)
+        .update({
+          NotificationToken: expoPushToken,
+        })
+        .then((data) => {
+          console.log("pushed----------->", data);
+          if (data == "ok") {
+            navigation.navigate("PaymentScreen");
+          } else {
+            console.log("<------------------------error------------------------------->");
+          }
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const BookAppointment = () => {
    
@@ -200,14 +210,15 @@ export default function BookAnAppointment({ route, navigation }) {
             Time: Time,
           })
           .then((data) => {
-            alert(data)
+            // alert('Appointment Booked')
 
-            console.log("data", data);
-            SendNotification(expoPushToken);
+            // console.log("data");
+            // SendNotification(expoPushToken);
+            PushTokenInFirebase(expoPushToken);
           });
       } catch (error) {
         alert("error")
-        console.log("error--------->",error);
+        // console.log("error--------->",error);
       }
     }
   };

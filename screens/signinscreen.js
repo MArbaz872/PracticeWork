@@ -75,9 +75,10 @@ const SignInScreen = ({ navigation }) => {
         // console.log(user.uid)
         // console.log(user.displayName)
         .then(async (res) => {
+          // console.log("res=======>",res.user.uid)
           await AsyncStorage.setItem("doc_id", res.user.uid);
           const token = (await Notifications.getDevicePushTokenAsync()).data;
-
+          // console.log("Token=======>",token)
 
           await firebase
             .firestore()
